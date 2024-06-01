@@ -208,4 +208,52 @@ class BinarySearchTree {
 
     return values;
   }
+
+  // Find the height of the BST
+  getHeight(currentHeight = 0) {
+    // Base case: If the node doesn't have any children, return the current height
+    if (!this.left && !this.right) return currentHeight;
+
+    // Recursive case: If the node has children, find the height of the left and right children
+    const newHeight = currentHeight + 1;
+
+    // If there is no left child, recursively call getHeight on the right child
+    if (!this.left) return this.right.getHeight(newHeight);
+
+    // If there is no right child, recursively call getHeight on the left child
+    if (!this.right) return this.left.getHeight(newHeight);
+
+    // If there are both left and right children, recursively call getHeight on both children
+    const leftHeight = this.left.getHeight(newHeight);
+    const rightHeight = this.right.getHeight(newHeight);
+
+    // Return the greater of the two heights
+    return Math.max(leftHeight, rightHeight);
+  }
+
+  // Determine if the tree is a binary search tree
+  isBST() {
+    // Use the existing dfsInOrder() method to traverse the tree
+    const values = this.dfsInOrder();
+
+    // Check if the array returned by dfsInOrder() is sorted
+    for (let i = 0; i < values.length - 1; i++) {
+      if (values[i] > values[i + 1]) return false;
+    }
+    return true;
+  }
+
+  // Find the kth largest node in a BST
+  findKthLargestValue(k) {
+    // Use the existing dfsInOrder() method to traverse the tree
+    const values = this.dfsInOrder();
+    const kthIndex = values.length - k;
+
+    // Return the kth largest value
+    if (kthIndex >= 0) {
+      return values[kthIndex];
+    } else {
+      console.error("k value exceeds the size of the BST.");
+    }
+  }
 }
